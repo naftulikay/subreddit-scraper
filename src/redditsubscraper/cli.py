@@ -11,6 +11,8 @@ logger = logging.getLogger('redditsubscraper.cli')
 def main():
     parser = argparse.ArgumentParser(prog='reddit-sub-scraper',
         description="A utility for downloading a subreddit's posts and comments.")
+    parser.add_argument('-v', action='append_const', dest='verbosity', const=True,
+        help="Set verboseness. Pass once for info-level logs, twice for debug-level logs.")
     parser.add_argument('-o', '--output-dir', required=True,
         help="The directory to save posts to.")
     parser.add_argument('subreddit', nargs='+',
@@ -18,8 +20,12 @@ def main():
 
     args = parser.parse_args()
 
-    # configure basic logging
-    logging.basicConfig(level=logging.WARNING, format="[%(levelname)s] %(message)s")
+    # configure basic logging; for every time -v is passed, deduct 10 from WARNING,
+    # allowing no further than 0.
+    logging.basicConfig(level=max(logging.WARNING - (len(args.verbosity) * 10), 0),
+        format="[%(levelname)s] %(message)s")
+
+    logging.debug("Program Arguments: %s", args)
 
     # create the output directory if not present
     if not os.path.isdir(args.output_dir):
@@ -47,7 +53,7 @@ def main():
                 sys.exit(1)
 
         # okay, now do the actual indexing
-
+        logger.info("Running crawler for the %s subreddit.", subreddit)
 
 if __name__ == "__main__":
     main()
