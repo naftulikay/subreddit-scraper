@@ -1,0 +1,17 @@
+# Vagrant
+.vagrant
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+*.pyc
+*.pyo
+
+# Buildout
+parts
+eggs
+develop-eggs
+bin
+.installed.cfg
+src/*.egg-info
