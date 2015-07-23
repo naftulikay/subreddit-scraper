@@ -9,4 +9,16 @@ node 'vagrant-trusty64' {
     package { 'python-pip':
         ensure => present
     }
+
+    package { [
+        'python-dev',
+        'build-essential',
+        'libxml2-dev',
+        'libxslt1-dev',
+        'zlib1g-dev',
+        'libffi-dev',
+        'libssl-dev',
+        ]:
+        ensure => present
+    }
 }
