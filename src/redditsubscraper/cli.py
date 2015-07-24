@@ -4,7 +4,11 @@
 import argparse
 import logging
 import os
+import scrapy
 import sys
+
+from scrapy.process import CrawlerProcess
+from redditsubscraper.spiders import SubredditSpider
 
 logger = logging.getLogger('redditsubscraper.cli')
 
@@ -15,8 +19,8 @@ def main():
         help="Set verboseness. Pass once for info-level logs, twice for debug-level logs.")
     parser.add_argument('-o', '--output-dir', required=True,
         help="The directory to save posts to.")
-    parser.add_argument('subreddit', nargs='+',
-        help="The name(s) of the subreddits you wish to download.")
+    parser.add_argument('subreddit', nargs=1,
+        help="The name of the subreddits you wish to download.")
 
     args = parser.parse_args()
 
@@ -38,22 +42,33 @@ def main():
                 e)
             sys.exit(1)
 
-    for subreddit in args.subreddit:
-        # attempt to make a directory for the subs entries
-        sub_output_dir = os.path.join(args.output_dir, subreddit)
+    # attempt to make a directory for the subs entries
+    sub_output_dir = os.path.join(args.output_dir, args.subreddit)
 
-        if not os.path.isdir(sub_output_dir):
-            try:
-                logger.debug("Subreddit output dir %s not present, creating it now.",
-                    sub_output_dir)
-                os.makedirs(sub_output_dir)
-            except OSError as e:
-                logger.error('Unable to create the subreddit output directory %s: %s',
-                    sub_output_dir, e)
-                sys.exit(1)
+    if not os.path.isdir(sub_output_dir):
+        try:
+            logger.debug("Subreddit output dir %s not present, creating it now.",
+                sub_output_dir)
+            os.makedirs(sub_output_dir)
+        except OSError as e:
+            logger.error('Unable to create the subreddit output directory %s: %s',
+                sub_output_dir, e)
+            sys.exit(1)
 
-        # okay, now do the actual indexing
-        logger.info("Running crawler for the %s subreddit.", subreddit)
+    # okay, now do the actual indexing
+    logger.info("Running crawler for the %s subreddit.", subreddit)
+
+
+    # instantiate the crawler process
+    process = scrapy.crawler.CrawlerProcess({
+        'BOT_NAME': 'redditsubscraper-0.0.1',
+        'DOWNLOAD_DELAY': 2, # seconds I hope
+        'RANDOMIZE_DOWNLOAD_DELAY': False, # no thanks bro
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1, # reddit hates
+    })
+
+    process.crawl(SubredditSpider, subreddit_name=args.subreddit, output_dir=sub_output_dir)
+    process.start()
 
 if __name__ == "__main__":
     main()

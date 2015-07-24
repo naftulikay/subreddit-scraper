@@ -8,7 +8,8 @@ setup(
     packages = find_packages('src'),
     package_dir = { '': 'src'},
     install_requires = ['setuptools',
-        'scrapy >= 1.0.1, < 1.1.0'
+        'scrapy >= 1.0.1, < 1.1.0',
+        'basehash',
     ],
     entry_points = {
         'console_scripts': [
