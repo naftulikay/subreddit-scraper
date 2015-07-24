@@ -57,8 +57,7 @@ def main():
 
     # okay, now do the actual indexing
     logger.info("Running crawler for the %s subreddit.", subreddit)
-
-
+    
     # instantiate the crawler process
     process = scrapy.crawler.CrawlerProcess({
         'BOT_NAME': 'redditsubscraper-0.0.1',
@@ -67,7 +66,7 @@ def main():
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1, # reddit hates
     })
 
-    process.crawl(SubredditSpider, subreddit_name=args.subreddit, output_dir=sub_output_dir)
+    process.crawl(SubredditSpider, subreddit_name=args.subreddit)
     process.start()
 
 if __name__ == "__main__":
