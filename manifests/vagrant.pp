@@ -1,5 +1,9 @@
 node 'vagrant-trusty64' {
 
+    package { 'git':
+        ensure => present,
+    }
+
     package { 'pip':
         ensure   => latest,
         provider => 'pip',

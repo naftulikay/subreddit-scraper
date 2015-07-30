@@ -3,8 +3,8 @@
 
 import unittest
 
-from redditsubscraper.exceptions import InvalidIdException
-from redditsubscraper.spiders import SubredditSpider
+from subredditscraper.exceptions import InvalidIdException
+from subredditscraper.spiders import SubredditSpider
 
 class SubredditSpiderTestCase(unittest.TestCase):
     """

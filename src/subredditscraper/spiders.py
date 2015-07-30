@@ -5,10 +5,10 @@ import logging
 import re
 import scrapy
 
-from redditsubscraper.exceptions import InvalidIdException
+from subredditscraper.exceptions import InvalidIdException
 from urllib import urlencode
 
-logger = logging.getLogger('redditsubscraper.spiders')
+logger = logging.getLogger('subredditscraper.spiders')
 
 
 class SubredditSpider(scrapy.spiders.Spider):

@@ -8,9 +8,9 @@ import scrapy
 import sys
 
 from scrapy.process import CrawlerProcess
-from redditsubscraper.spiders import SubredditSpider
+from subredditscraper.spiders import SubredditSpider
 
-logger = logging.getLogger('redditsubscraper.cli')
+logger = logging.getLogger('subredditscraper.cli')
 
 def main():
     parser = argparse.ArgumentParser(prog='reddit-sub-scraper',
@@ -57,10 +57,10 @@ def main():
 
     # okay, now do the actual indexing
     logger.info("Running crawler for the %s subreddit.", subreddit)
-    
+
     # instantiate the crawler process
     process = scrapy.crawler.CrawlerProcess({
-        'BOT_NAME': 'redditsubscraper-0.0.1',
+        'BOT_NAME': 'subreddit-scraper-0.0.1',
         'DOWNLOAD_DELAY': 2, # seconds I hope
         'RANDOMIZE_DOWNLOAD_DELAY': False, # no thanks bro
         'CONCURRENT_REQUESTS_PER_DOMAIN': 1, # reddit hates
