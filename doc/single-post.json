@@ -1,0 +1,82 @@
+{
+  "kind": "t3",
+  "data": {
+    "domain": "soundcloud.com",
+    "banned_by": null,
+    "media_embed": {
+      "content": "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fw.soundcloud.com%2Fplayer%2F%3Fvisual%3Dtrue%26url%3Dhttp%253A%252F%252Fapi.soundcloud.com%252Ftracks%252F215642231%26show_artwork%3Dtrue&amp;url=https%3A%2F%2Fsoundcloud.com%2Fsnatchscratch%2Fprototune&amp;image=http%3A%2F%2Fi1.sndcdn.com%2Fartworks-000123877416-k71qak-t500x500.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=soundcloud\" width=\"500\" height=\"500\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;",
+      "width": 500,
+      "scrolling": false,
+      "height": 500
+    },
+    "subreddit": "woahdude",
+    "selftext_html": null,
+    "selftext": "",
+    "likes": null,
+    "suggested_sort": null,
+    "user_reports": [],
+    "secure_media": {
+      "oembed": {
+        "provider_url": "http://soundcloud.com",
+        "description": "Stream Prototune by SnatchScratch from desktop or your mobile device",
+        "title": "Prototune by SnatchScratch",
+        "type": "rich",
+        "thumbnail_width": 500,
+        "height": 500,
+        "width": 500,
+        "html": "&lt;iframe class=\"embedly-embed\" src=\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fw.soundcloud.com%2Fplayer%2F%3Fvisual%3Dtrue%26url%3Dhttp%253A%252F%252Fapi.soundcloud.com%252Ftracks%252F215642231%26show_artwork%3Dtrue&amp;url=https%3A%2F%2Fsoundcloud.com%2Fsnatchscratch%2Fprototune&amp;image=http%3A%2F%2Fi1.sndcdn.com%2Fartworks-000123877416-k71qak-t500x500.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=soundcloud\" width=\"500\" height=\"500\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;",
+        "author_name": "SnatchScratch",
+        "version": "1.0",
+        "provider_name": "SoundCloud",
+        "thumbnail_url": "https://i.embed.ly/1/image?url=http%3A%2F%2Fi1.sndcdn.com%2Fartworks-000123877416-k71qak-t500x500.jpg&amp;key=b1e305db91cf4aa5a86b732cc9fffceb",
+        "thumbnail_height": 500,
+        "author_url": "http://soundcloud.com/snatchscratch"
+      },
+      "type": "soundcloud.com"
+    },
+    "link_flair_text": "music",
+    "id": "3fnayn",
+    "from_kind": null,
+    "gilded": 0,
+    "archived": false,
+    "clicked": false,
+    "report_reasons": null,
+    "author": "xXScharlatanXx",
+    "media": {
+      "oembed": {
+        "provider_url": "http://soundcloud.com",
+        "description": "Stream Prototune by SnatchScratch from desktop or your mobile device",
+        "title": "Prototune by SnatchScratch",
+        "type": "rich",
+        "thumbnail_width": 500,
+        "height": 500,
+        "width": 500,
+        "html": "&lt;iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fw.soundcloud.com%2Fplayer%2F%3Fvisual%3Dtrue%26url%3Dhttp%253A%252F%252Fapi.soundcloud.com%252Ftracks%252F215642231%26show_artwork%3Dtrue&amp;url=https%3A%2F%2Fsoundcloud.com%2Fsnatchscratch%2Fprototune&amp;image=http%3A%2F%2Fi1.sndcdn.com%2Fartworks-000123877416-k71qak-t500x500.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=soundcloud\" width=\"500\" height=\"500\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;",
+        "author_name": "SnatchScratch",
+        "version": "1.0",
+        "provider_name": "SoundCloud",
+        "thumbnail_url": "http://i1.sndcdn.com/artworks-000123877416-k71qak-t500x500.jpg",
+        "thumbnail_height": 500,
+        "author_url": "http://soundcloud.com/snatchscratch"
+      },
+      "type": "soundcloud.com"
+    },
+    "score": 1,
+    "approved_by": null,
+    "over_18": false,
+    "hidden": false,
+    "num_comments": 0,
+    "thumbnail": "",
+    "subreddit_id": "t5_2r8tu",
+    "hide_score": true,
+    "edited": false,
+    "link_flair_css_class": "music",
+    "author_flair_css_class": null,
+    "downs": 0,
+    "secure_media_embed": {
+      "content": "&lt;iframe class=\"embedly-embed\" src=\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fw.soundcloud.com%2Fplayer%2F%3Fvisual%3Dtrue%26url%3Dhttp%253A%252F%252Fapi.soundcloud.com%252Ftracks%252F215642231%26show_artwork%3Dtrue&amp;url=https%3A%2F%2Fsoundcloud.com%2Fsnatchscratch%2Fprototune&amp;image=http%3A%2F%2Fi1.sndcdn.com%2Fartworks-000123877416-k71qak-t500x500.jpg&amp;key=2aa3c4d5f3de4f5b9120b660ad850dc9&amp;type=text%2Fhtml&amp;schema=soundcloud\" width=\"500\" height=\"500\" scrolling=\"no\" frameborder=\"0\" allowfullscreen&gt;&lt;/iframe&gt;",
+      "width": 500,
+      "scrolling": false,
+      "height": 500
+    }
+}
