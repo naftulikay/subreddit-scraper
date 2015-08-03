@@ -1,5 +1,5 @@
 [
-  { "__request_url": "https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&sort=new&showmore=false&limit=5" },
+  { "__request_url": "https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&sort=new&showmore=false&before=ctmlaqo&limit=5" }
 
   {
     "kind": "Listing",
@@ -66,7 +66,7 @@
               }
             },
             "name": "t3_3f6fp6",
-            "score": 6097,
+            "score": 6106,
             "approved_by": null,
             "over_18": false,
             "hidden": false,
@@ -96,7 +96,7 @@
             "author_flair_text": null,
             "title": "Swincar",
             "created_utc": 1438274448,
-            "ups": 6097,
+            "ups": 6106,
             "upvote_ratio": 0.98,
             "num_comments": 600,
             "visited": false,

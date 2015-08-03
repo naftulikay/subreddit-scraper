@@ -25,6 +25,26 @@ class SubredditSpider(scrapy.spiders.Spider):
       * t6_ - award
       * t8_ - promo campaign
 
+    Single comment GET:
+        https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&comment=ctly7f4&sort=new&showmore=false
+        https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&comment=cto4lbd&sort=new&showmore=false
+
+    We want a depth of 1 (ie _only_ the comment itself), not to show more, sort by new, and for the above request,
+    we select the specific comment we want. By removing the comment parameter, we'll get a listing of comments for
+    the article without any depth, which is what we want.
+
+    Multi post/link GET:
+        https://www.reddit.com/r/woahdude/new.json?sort=new&limit=5
+
+    Multi post/link GET more (before last post of previous request):
+        https://www.reddit.com/r/woahdude/new.json?sort=new&limit=5&before=3fn7gg
+
+    Multi comment GET:
+        https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&sort=new&showmore=false
+
+    Multi comment GET more (before last post of previous request):
+        https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&sort=new&showmore=false&before=ctmlaqo&limit=5
+
     Here's the process for scraping Reddit.
 
     1. GET https://www.reddit.com/r/$sub_name/new.json?sort=new

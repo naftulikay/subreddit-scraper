@@ -1,0 +1,40 @@
+{
+  "__request_url": "https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&comment=ctly7f4&sort=new&showmore=false",
+
+
+  "kind": "t1",
+  "data": {
+    "subreddit_id": "t5_2r8tu",
+    "banned_by": null,
+    "removal_reason": null,
+    "link_id": "t3_3f6fp6",
+    "likes": null,
+    "replies": "",
+    "user_reports": [],
+    "saved": false,
+    "id": "ctly7f4",
+    "gilded": 0,
+    "archived": false,
+    "report_reasons": null,
+    "author": "ZachPlaysDrums",
+    "parent_id": "t1_ctlxfsd",
+    "score": 96,
+    "approved_by": null,
+    "controversiality": 0,
+    "body": "&gt;I bet neither his grandson **N**OR his Ford Focus would ~~not~~ appreciate that.\n\nftfy\n\nedit: LOL",
+    "edited": 1438288284,
+    "author_flair_css_class": null,
+    "downs": 0,
+    "body_html": "&lt;div class=\"md\"&gt;&lt;blockquote&gt;\n&lt;p&gt;I bet neither his grandson &lt;strong&gt;N&lt;/strong&gt;OR his Ford Focus would &lt;del&gt;not&lt;/del&gt; appreciate that.&lt;/p&gt;\n&lt;/blockquote&gt;\n\n&lt;p&gt;ftfy&lt;/p&gt;\n\n&lt;p&gt;edit: LOL&lt;/p&gt;\n&lt;/div&gt;",
+    "subreddit": "woahdude",
+    "score_hidden": false,
+    "name": "t1_ctly7f4",
+    "created": 1438290752,
+    "author_flair_text": null,
+    "created_utc": 1438287152,
+    "distinguished": null,
+    "mod_reports": [],
+    "num_reports": null,
+    "ups": 96
+  }
+}

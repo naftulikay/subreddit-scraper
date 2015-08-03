@@ -1,6 +1,26 @@
-[
-  { "__request_url": "https://www.reddit.com/r/woahdude/comments/3f6fp6/new.json?depth=1&sort=new&showmore=false&limit=5" },
+HTTP/1.1 200 OK
+x-frame-options:SAMEORIGIN
+last-modified:Mon, 03 Aug 2015 06:23:21 GMT
+access-control-allow-origin:*
+X-Moose:majestic
+x-ua-compatible:IE=edge
+access-control-expose-headers:X-Reddit-Tracking, X-Moose
+Connection:keep-alive
+x-reddit-tracking:https://pixel.redditmedia.com/pixel/of_destiny.png?v=hjnquFN8GYhFnUlS3miBD6OvVu7I3vCLZnz%2FKVwavr5V0jxLlyCEIIfQXQCSGrWzAQzhwlbf1pg%3D
+Server:cloudflare-nginx
+cache-control:private, max-age=0, must-revalidate
+cache-control:max-age=0, must-revalidate
+x-content-type-options:nosniff
+x-xss-protection:1; mode=block
+Vary:accept-encoding
+Date:Mon, 03 Aug 2015 18:12:50 GMT
+Transfer-Encoding:chunked
+CF-RAY:2103fe3807c602b5-IAD
+Content-Type:application/json; charset=UTF-8
+CF-Cache-Status:HIT
+Set-Cookie:****
 
+[
   {
     "kind": "Listing",
     "data": {
@@ -66,7 +86,7 @@
               }
             },
             "name": "t3_3f6fp6",
-            "score": 6097,
+            "score": 6106,
             "approved_by": null,
             "over_18": false,
             "hidden": false,
@@ -96,7 +116,7 @@
             "author_flair_text": null,
             "title": "Swincar",
             "created_utc": 1438274448,
-            "ups": 6097,
+            "ups": 6106,
             "upvote_ratio": 0.98,
             "num_comments": 600,
             "visited": false,
