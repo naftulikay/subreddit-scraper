@@ -8,6 +8,9 @@ from subredditscraper.exceptions import InvalidIdException
 from subredditscraper.items import (
     bool_serializer,
     edited_serializer,
+    id_serializer,
+    link_id_serializer,
+    comment_id_serializer,
 )
 
 from subredditscraper.spiders import SubredditSpider
@@ -41,6 +44,48 @@ class ItemsTestCase(unittest.TestCase):
         self.assertEqual(3.0, edited_serializer(3.0))
         # convert int to float
         self.assertEqual(3.0, edited_serializer(3))
+
+    def test_id_serializer(self):
+        """
+        Tests that the id serializer removes the prefix from a base-36 id.
+        """
+        # test for cases which should work
+        self.assertEqual('abc123', id_serializer('t1_abc123'))
+        self.assertEqual('abc123', id_serializer('abc123'))
+        self.assertEqual(u'abc123', id_serializer(u't1_abc123'))
+
+        # test for cases which should not work
+        self.assertEqual(None, id_serializer('LOL_NOT_MATCHING'))
+        self.assertEqual(None, id_serializer(1))
+        self.assertEqual(None, id_serializer(None))
+
+    def test_link_id_serializer(self):
+        """
+        Tests that the link id serializer works as planned.
+        """
+        # cases which should work
+        self.assertEqual(u't3_abc123', link_id_serializer(u'abc123'))
+        self.assertEqual(u't3_abc123', link_id_serializer(u't3_abc123'))
+        self.assertEqual('t3_abc123', link_id_serializer('abc123'))
+
+        # cases which should not work
+        self.assertEqual(None, link_id_serializer('LOL_NOT_MATCHING'))
+        self.assertEqual(None, link_id_serializer(1))
+        self.assertEqual(None, link_id_serializer(None))
+
+    def test_comment_id_serializer(self):
+        """
+        Tests that the comment id serializer works as planned.
+        """
+        # cases which should work
+        self.assertEqual(u't1_abc123', comment_id_serializer(u'abc123'))
+        self.assertEqual(u't1_abc123', comment_id_serializer(u't1_abc123'))
+        self.assertEqual('t1_abc123', comment_id_serializer('t1_abc123'))
+
+        # cases which should not work
+        self.assertEqual(None, comment_id_serializer('LOL_NOT_MATCHING'))
+        self.assertEqual(None, comment_id_serializer(1))
+        self.assertEqual(None, comment_id_serializer(None))
 
 
 class SubredditSpiderTestCase(unittest.TestCase):

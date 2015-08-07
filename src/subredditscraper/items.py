@@ -3,6 +3,8 @@
 
 import scrapy
 
+from subredditscraper.spiders import SubredditSpider
+
 
 bool_serializer = lambda a: bool(a) if a is not None else None
 
@@ -17,6 +19,30 @@ def edited_serializer(a):
         return float(a)
     else:
         return None
+
+
+def id_serializer(a):
+    """
+    Serializes an ID by stripping its prefix.
+    """
+    if isinstance(a, (str, unicode)) and SubredditSpider.id_regex.match(a):
+        return SubredditSpider.id_regex.match(a).group(1)
+    else:
+        return None
+
+
+def link_id_serializer(a):
+    """
+    Serializes a link id by prefixing it if necessary.
+    """
+    return a
+
+
+def comment_id_serializer(a):
+    """
+    Serializes a comment id by prefixing it if necessary.
+    """
+    return a
 
 
 class Created(object):
@@ -81,6 +107,16 @@ class Link(scrapy.Item, Created, Votable):
     Exact mapping of original field names from JSON. Arrays and dicts are serialized to strings. Descriptions of fields
     are taken from Reddit's official wiki: https://github.com/reddit/reddit/wiki/JSON
     """
+
+    """
+    The base-36 id of the link.
+    """
+    id = scrapy.Field(serializer=id_serializer)
+
+    """
+    The prefixed base-36 id of the link.
+    """
+    prefixed_id = scrapy.Field(serializer=link_id_serializer)
 
     """
     The account name of the poster, null if it's a promotional link.
@@ -308,6 +344,16 @@ class Comment(scrapy.Item):
     """
 
     """
+    The base-36 id of this comment.
+    """
+    id = scrapy.Field(serializer=id_serializer)
+
+    """
+    The prefixed base-36 id of this comment.
+    """
+    prefixed_id = scrapy.Field(serializer=comment_id_serializer)
+
+    """
     The username of the approver of this comment.
 
     Description:
@@ -398,7 +444,7 @@ class Comment(scrapy.Item):
     Description:
     (str) ID of the link this comment is in
     """
-    link_id = scrapy.Field()
+    link_id = scrapy.Field(serializer=id_serializer)
 
     """
     The title of the link this comment belongs to.
