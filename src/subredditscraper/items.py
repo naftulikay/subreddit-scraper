@@ -307,7 +307,181 @@ class Comment(scrapy.Item):
     are taken from Reddit's official wiki: https://github.com/reddit/reddit/wiki/JSON
     """
 
+    """
+    The username of the approver of this comment.
+
+    Description:
+    (str) who approved this comment. null if nobody or you are not a mod
+    """
     approved_by = scrapy.Field()
+
+    """
+    The account name of the poster.
+
+    Description:
+    (str) the account name of the poster.
+    """
+    author = scrapy.Field()
+
+    """
+    The CSS class of the author's flair.
+
+    Description:
+    (str) the CSS class of the author's flair. subreddit specific
+    """
+    author_flair_css_class = scrapy.Field()
+
+    """
+    The text of the author's flair.
+
+    Description:
+    (str) the text of the author's flair. subreddit specific
+    """
+    author_flair_text = scrapy.Field()
+
+    """
+    The username of the user which banned this comment.
+
+    Description;
+    (str) who removed this comment. null if nobody or you are not a mod
+    """
+    banned_by = scrapy.Field()
+
+    """
+    The raw Markdown text of the comment.
+
+    Description:
+    (str) the raw text. this is the unformatted text which includes the raw markup characters such as ** for bold. <,
+          >, and & are escaped.
+    """
+    body = scrapy.Field()
+
+    """
+    The formatted HTML text of the comment generated from the raw Markdown text.
+
+    Description:
+    (str) the formatted HTML text as displayed on reddit. For example, text that is emphasised by * will now have <em>
+          tags wrapping it. Additionally, bullets and numbered lists will now be in HTML list format. NOTE: The HTML
+          string will be escaped. You must unescape to get the raw HTML.
+    """
+    body_html = scrapy.Field()
+
+    """
+    The last time this comment was edited, or false if it was never edited.
+
+    Description:
+    (long) false if not edited, edit date in UTC epoch-seconds otherwise. NOTE: for some old edited comments on
+           reddit.com, this will be set to true instead of edit date.
+    """
+    edited = scrapy.Field(serializer=edited_serializer)
+
+    """
+    How many times this comment has been gilded
+
+    Description:
+    (long) the number of times this comment received reddit gold
+    """
+    gilded = scrapy.Field(serializer=long)
+
+    """
+    The link author's username.
+
+    Description:
+    (str) present if the comment is being displayed outside its thread (user pages, /r/subreddit/comments/.json, etc.).
+          Contains the author of the parent link
+    """
+    link_author = scrapy.Field()
+
+    """
+    The id of the link this comment belongs to.
+
+    Description:
+    (str) ID of the link this comment is in
+    """
+    link_id = scrapy.Field()
+
+    """
+    The title of the link this comment belongs to.
+
+    Description:
+    (str) present if the comment is being displayed outside its thread (user pages, /r/subreddit/comments/.json, etc.).
+          Contains the title of the parent link
+    """
+    link_title = scrapy.Field()
+
+    """
+    The URL of the link this comment belongs to.
+
+    Description:
+    (str) present if the comment is being displayed outside its thread (user pages, /r/subreddit/comments/.json, etc.).
+          Contains the URL of the parent link
+    """
+    link_url = scrapy.Field()
+
+    """
+    The number of reports that this comment has accumulated.
+
+    Description:
+    (int) how many times this comment has been reported, null if not a mod
+    """
+    num_reports = scrapy.Field(serializer=long)
+
+    """
+    The parent ID of the thing this comment belongs to.
+
+    Description:
+    (str) ID of the thing this comment is a reply to, either the link or a comment in it
+    """
+    parent_id = scrapy.Field()
+
+    """
+    Whether this comment has been saved by the current user.
+
+    Description:
+    (bool) true if this post is saved by the logged in user
+    """
+    saved = scrapy.Field(serializer=bool)
+
+    """
+    The net-score of this comment.
+
+    Description:
+    (int) the net-score of the comment
+    """
+    score = scrapy.Field(serializer=long)
+
+    """
+    Whether this comment's score is hidden.
+
+    Description:
+    (bool) Whether the comment's score is currently hidden.
+    """
+    score_hidden = scrapy.Field(serializer=bool)
+
+    """
+    The name of the subreddit to which this comment and its link belong.
+
+    Description:
+    (str) subreddit of thing excluding the /r/ prefix. "pics"
+    """
+    subreddit = scrapy.Field()
+
+    """
+    The prefixed base-36 ID of the subreddit to which this comment and its link belong.
+
+    Description:
+    (str) the id of the subreddit in which the thing is located
+    """
+    subreddit_id = scrapy.Field()
+
+    """
+    The status of this comment's being distinguished.
+
+    Description:
+    (str) to allow determining whether they have been distinguished by moderators/admins. null = not distinguished.
+    moderator = the green [M]. admin = the red [A]. special = various other special distinguishes
+    """
+    distinguished = scrapy.Field()
 
 
 class SQLiteItemPipeline(object):
