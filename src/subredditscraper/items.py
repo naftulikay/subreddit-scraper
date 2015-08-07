@@ -7,6 +7,18 @@ import scrapy
 bool_serializer = lambda a: bool(a) if a is not None else None
 
 
+def edited_serializer(a):
+    """
+    Serializes a float or boolean to a float or None.
+    """
+    if a is False:
+        return None
+    elif isinstance(a, (int, float, long)) or a is True:
+        return float(a)
+    else:
+        return None
+
+
 class Created(object):
     """
     An object that keeps track of when it was created.
@@ -55,7 +67,7 @@ class Votable(object):
     "liked" or "disliked" this object.
 
     Description:
-    (boolean) true if thing is liked by the user, false if thing is disliked, null if the user has not voted or you are
+    (Boolean) true if thing is liked by the user, false if thing is disliked, null if the user has not voted or you are
               not logged in. Certain languages such as Java may need to use a boolean wrapper that supports null
               assignment.
     """
@@ -70,24 +82,8 @@ class Link(scrapy.Item, Created, Votable):
     are taken from Reddit's official wiki: https://github.com/reddit/reddit/wiki/JSON
     """
 
-    """An id encoded in base-36 without any prefixes."""
-    id = scrapy.Field()
-
     """
-    The username of the user that approved this comment. (String)
-
-    Description:
-    (str) who approved this comment. null if nobody or you are not a mod
-    """
-    approved_by = scrapy.Field()
-
-    """
-    Whether this post has been archived. No documentation found for this field in Reddit's docs.
-    """
-    archived = scrapy.Field()
-
-    """
-    The username of the creating user of this post.
+    The account name of the poster, null if it's a promotional link.
 
     Description:
     (str) the account name of the poster. null if this is a promotional link
@@ -111,37 +107,196 @@ class Link(scrapy.Item, Created, Votable):
     author_flair_text = scrapy.Field()
 
     """
+    Presumably whether the user has clicked this link.
 
     Description:
-    (str)
+    (bool) probably always returns false
     """
-    banned_by = scrapy.Field()
-    clicked = scrapy.Field()
+    clicked = scrapy.Field(serializer=bool_serializer)
+
+    """
+    The domain name of this link.
+
+    Description:
+    (str) the domain of this link. Self posts will be self.<subreddit> while other examples include en.wikipedio.org
+          and s3.amazon.com
+    """
     domain = scrapy.Field()
-    downs = scrapy.Field()
-    edited = scrapy.Field()
-    from_kind = scrapy.Field()
-    gilded = scrapy.Field()
-    hidden = scrapy.Field()
-    hide_score = scrapy.Field()
-    likes = scrapy.Field()
+
+    """
+    Whether the post is hidden or not.
+
+    Description:
+    (boolean) true if the post is hidden by the logged in user. false if not logged in or not hidden.
+    """
+    hidden = scrapy.Field(serializer=bool)
+
+    """
+    Whether this link is a selfpost.
+
+    Description:
+    (boolean) true if this link is a selfpost.
+    """
+    is_self = scrapy.Field(serializer=bool)
+
+    """
+    The CSS class of the link's flair.
+
+    Description:
+    (str) the CSS class of the link's flair.
+    """
     link_flair_css_class = scrapy.Field()
+
+    """
+    The text of the link's flair.
+
+    Description:
+    (str) the text of the link's flair.
+    """
     link_flair_text = scrapy.Field()
-    media = scrapy.Field()
-    media_embed = scrapy.Field()
-    num_comments = scrapy.Field()
-    over_18 = scrapy.Field()
-    report_reasons = scrapy.Field()
-    score = scrapy.Field()
-    secure_media = scrapy.Field()
-    secure_media_embed = scrapy.Field()
+
+    """
+    Information on media relevant to the url.
+
+    Description:
+    (dict) Used for streaming video. Technical embed-specific information is found here.
+    """
+    media = scrapy.Field(serializer=unicode)
+
+    """
+    More information on embedded media relevant to the url.
+
+    Description:
+    (dict) Used for streaming video. Technical embed-specific information is found here.
+    """
+    media_embed = scrapy.Field(serializer=unicode)
+
+    """
+    The number of comments on this link.
+
+    Description:
+    (int) the number of comments that belong to this link. includes removed comments.
+    """
+    num_comments = scrapy.Field(serializer=long)
+
+    """
+    Whether the post is NSFW.
+
+    Description:
+    (bool) true if this post is tagged as NSFW. False if otherwise.
+    """
+    over_18 = scrapy.Field(serializer=bool)
+
+    """
+    The relative (to reddit.com) permalink for this link.
+
+    Description:
+    (str) relative URL of the permanent link for this link.
+    """
+    permalink = scrapy.Field()
+
+    """
+    Whether this post has been saved by the user.
+
+    Description:
+    (bool) true if this post is saved by the logged in user
+    """
+    saved = scrapy.Field(serializer=bool)
+
+    """
+    The net-score for the link.
+
+    Description:
+    (long) the net-score of the link.
+    """
+    score = scrapy.Field(serializer=long)
+
+    """
+    The raw Markdown text of the body.
+
+    Description:
+    (str) The raw text. this is the unformatted text which includes the raw markup characters such as ** for bold.
+          <, >, and& are escaped. Empty if not present.
+    """
     selftext = scrapy.Field()
+
+    """
+    The HTML generated text of the body from the raw Markdown.
+
+    Description:
+    (str) The formatted escaped HTML text. this is the HTML formatted version of the marked up text. Items that are
+          boldened by ** or *** will now have <em> or *** tags on them. Additionally, bullets and numbered lists will
+          now be in HTML list format. NOTE: The HTML string will be escaped. You must unescape to get the raw HTML. Null
+          if not present.
+    """
     selftext_html = scrapy.Field()
+
+    """
+    Name of the subreddit which this link belongs to.
+
+    Description:
+    (str) subreddit of thing excluding the /r/ prefix.
+    """
     subreddit = scrapy.Field()
+
+    """
+    The prefixed base-36 id of the subreddit to which this post belongs.
+
+    Description:
+    (str) the id of the subreddit in which the link is located.
+    """
     subreddit_id = scrapy.Field()
-    suggested_sort = scrapy.Field()
+
+    """
+    A full URL to the thumbnail for this link.
+
+    Description:
+    (str) full URL to the thumbnail for this link; "self" if this is a self post; "default" if a thumbnail is not
+          available.
+    """
     thumbnail = scrapy.Field()
-    user_reports = scrapy.Field()
+
+    """
+    The title of the link.
+
+    Description:
+    (str) the title of the link. may contain newlines for some reason
+    """
+    title = scrapy.Field()
+
+    """
+    The link of this post.
+
+    Description:
+    (str) the link of this post. the permalink if this is a self-post
+    """
+    url = scrapy.Field()
+
+    """
+    The edited time of this link or false if unedited.
+
+    Description:
+    (long) indicates if link has been edited. Will be the edit timestamp if the link has been edited and return false
+           otherwise.
+    """
+    edited = scrapy.Field(serializer=edited_serializer)
+
+    """
+    Whether this post has been distinguished by moderators/admins.
+
+    Description:
+    (str) to allow determining whether they have been distinguished by moderators/admins. null = not distinguished,
+          moderator = the green [M], admin = the red [A], special = various other special distinguishes
+    """
+    distinguished = scrapy.Field()
+
+    """
+    Whether this post has been set to be a sticky in this subreddit.
+
+    Description:
+    (bool) true if this post is set as the sticky in its subreddit.
+    """
+    stickied = scrapy.Field()
 
 
 class Comment(scrapy.Item):
@@ -152,40 +307,7 @@ class Comment(scrapy.Item):
     are taken from Reddit's official wiki: https://github.com/reddit/reddit/wiki/JSON
     """
 
-    """An id encoded in base-36 without any prefixes."""
-    id = scrapy.Field()
-
     approved_by = scrapy.Field()
-    archived = scrapy.Field()
-    author = scrapy.Field()
-    author_flair_css_class = scrapy.Field()
-    author_flair_text = scrapy.Field()
-    banned_by = scrapy.Field()
-    body = scrapy.Field()
-    body_html = scrapy.Field()
-    controversiality = scrapy.Field()
-    created = scrapy.Field()
-    created_utc = scrapy.Field()
-    distinguished = scrapy.Field()
-    downs = scrapy.Field()
-    edited = scrapy.Field()
-    gilded = scrapy.Field()
-    likes = scrapy.Field()
-    link_id = scrapy.Field()
-    mod_reports = scrapy.Field()
-    name = scrapy.Field()
-    num_reports = scrapy.Field()
-    parent_id = scrapy.Field()
-    removal_reason = scrapy.Field()
-    replies = scrapy.Field()
-    report_reasons = scrapy.Field()
-    saved = scrapy.Field()
-    score = scrapy.Field()
-    score_hidden = scrapy.Field()
-    subreddit = scrapy.Field()
-    subreddit_id = scrapy.Field()
-    ups = scrapy.Field()
-    user_reports = scrapy.Field()
 
 
 class SQLiteItemPipeline(object):

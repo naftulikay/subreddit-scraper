@@ -4,7 +4,44 @@
 import unittest
 
 from subredditscraper.exceptions import InvalidIdException
+
+from subredditscraper.items import (
+    bool_serializer,
+    edited_serializer,
+)
+
 from subredditscraper.spiders import SubredditSpider
+
+
+class ItemsTestCase(unittest.TestCase):
+    """
+    Test cases for global items.
+    """
+
+    def test_bool_serializer(self):
+        """
+        Tests that the boolean serializer serializes a value to True, False, or None.
+        """
+        self.assertEqual(None, bool_serializer(None))
+        self.assertEqual(True, bool_serializer(True))
+        self.assertEqual(False, bool_serializer(False))
+
+    def test_edited_serializer(self):
+        """
+        Tests that the float or none serializer serializes a value to a float or None.
+        """
+        # test boolean value
+        self.assertEqual(None, edited_serializer(False))
+        self.assertEqual(1.0, edited_serializer(True))
+        # test string value
+        self.assertEqual(None, edited_serializer('nope'))
+        # convert long to float
+        self.assertEqual(3.0, edited_serializer(3L))
+        # convert float to float
+        self.assertEqual(3.0, edited_serializer(3.0))
+        # convert int to float
+        self.assertEqual(3.0, edited_serializer(3))
+
 
 class SubredditSpiderTestCase(unittest.TestCase):
     """
