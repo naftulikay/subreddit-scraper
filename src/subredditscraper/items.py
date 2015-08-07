@@ -28,7 +28,7 @@ class Created(object):
     The time of creation in local epoch-second format.
 
     Description:
-    (long) The time of creation in local epoch-second format. ex: 1331042771.0
+    (int) The time of creation in local epoch-second format. ex: 1331042771.0
     """
     created = scrapy.Field(serializer=float)
 
@@ -36,7 +36,7 @@ class Created(object):
     The time of creation in UTC epoch-second format. Note that neither of these ever have a non-zero fraction.
 
     Description:
-    (long) the time of creation in UTC epoch-second format. Note that neither of these ever have a non-zero fraction.
+    (int) the time of creation in UTC epoch-second format. Note that neither of these ever have a non-zero fraction.
     """
     created_utc = scrapy.Field(serializer=float)
 
@@ -52,7 +52,7 @@ class Votable(object):
     Description:
     (int) the number of upvotes. (includes own)
     """
-    ups = scrapy.Field(serializer=long)
+    ups = scrapy.Field(serializer=int)
 
     """
     The amount of downvotes for this given object.
@@ -60,7 +60,7 @@ class Votable(object):
     Description:
     (int) the number of downvotes. (includes own)
     """
-    downs = scrapy.Field(serializer=long)
+    downs = scrapy.Field(serializer=int)
 
     """
     True if the current user "likes" this object, false if the user "dislikes" this object, null if the user hasn't
@@ -177,7 +177,7 @@ class Link(scrapy.Item, Created, Votable):
     Description:
     (int) the number of comments that belong to this link. includes removed comments.
     """
-    num_comments = scrapy.Field(serializer=long)
+    num_comments = scrapy.Field(serializer=int)
 
     """
     Whether the post is NSFW.
@@ -207,9 +207,9 @@ class Link(scrapy.Item, Created, Votable):
     The net-score for the link.
 
     Description:
-    (long) the net-score of the link.
+    (int) the net-score of the link.
     """
-    score = scrapy.Field(serializer=long)
+    score = scrapy.Field(serializer=int)
 
     """
     The raw Markdown text of the body.
@@ -276,7 +276,7 @@ class Link(scrapy.Item, Created, Votable):
     The edited time of this link or false if unedited.
 
     Description:
-    (long) indicates if link has been edited. Will be the edit timestamp if the link has been edited and return false
+    (int) indicates if link has been edited. Will be the edit timestamp if the link has been edited and return false
            otherwise.
     """
     edited = scrapy.Field(serializer=edited_serializer)
@@ -370,7 +370,7 @@ class Comment(scrapy.Item):
     The last time this comment was edited, or false if it was never edited.
 
     Description:
-    (long) false if not edited, edit date in UTC epoch-seconds otherwise. NOTE: for some old edited comments on
+    (int) false if not edited, edit date in UTC epoch-seconds otherwise. NOTE: for some old edited comments on
            reddit.com, this will be set to true instead of edit date.
     """
     edited = scrapy.Field(serializer=edited_serializer)
@@ -379,9 +379,9 @@ class Comment(scrapy.Item):
     How many times this comment has been gilded
 
     Description:
-    (long) the number of times this comment received reddit gold
+    (int) the number of times this comment received reddit gold
     """
-    gilded = scrapy.Field(serializer=long)
+    gilded = scrapy.Field(serializer=int)
 
     """
     The link author's username.
@@ -424,7 +424,7 @@ class Comment(scrapy.Item):
     Description:
     (int) how many times this comment has been reported, null if not a mod
     """
-    num_reports = scrapy.Field(serializer=long)
+    num_reports = scrapy.Field(serializer=int)
 
     """
     The parent ID of the thing this comment belongs to.
@@ -448,7 +448,7 @@ class Comment(scrapy.Item):
     Description:
     (int) the net-score of the comment
     """
-    score = scrapy.Field(serializer=long)
+    score = scrapy.Field(serializer=int)
 
     """
     Whether this comment's score is hidden.
