@@ -17,8 +17,8 @@ def main():
         description="A utility for downloading a subreddit's posts and comments.")
     parser.add_argument('-v', action='append_const', dest='verbosity', const=True,
         help="Set verboseness. Pass once for info-level logs, twice for debug-level logs.")
-    parser.add_argument('-o', '--output-dir', required=True,
-        help="The directory to save posts to.")
+    parser.add_argument('-d', '--database-file', default="subreddits.db",
+        help="The database file to save posts to.")
     parser.add_argument('subreddit', nargs=1,
         help="The name of the subreddits you wish to download.")
 
@@ -31,30 +31,6 @@ def main():
 
     logging.debug("Program Arguments: %s", args)
 
-    # create the output directory if not present
-    if not os.path.isdir(args.output_dir):
-        try:
-            logger.debug("Output dir %s is not present, making directory/directories.",
-                args.output_dir)
-            os.makedirs(args.output_dir)
-        except OSError as e:
-            logger.error('Unable to create the output directory %s: %s', args.output_dir,
-                e)
-            sys.exit(1)
-
-    # attempt to make a directory for the subs entries
-    sub_output_dir = os.path.join(args.output_dir, args.subreddit)
-
-    if not os.path.isdir(sub_output_dir):
-        try:
-            logger.debug("Subreddit output dir %s not present, creating it now.",
-                sub_output_dir)
-            os.makedirs(sub_output_dir)
-        except OSError as e:
-            logger.error('Unable to create the subreddit output directory %s: %s',
-                sub_output_dir, e)
-            sys.exit(1)
-
     # okay, now do the actual indexing
     logger.info("Running crawler for the %s subreddit.", subreddit)
 
@@ -63,7 +39,11 @@ def main():
         'BOT_NAME': 'subreddit-scraper-0.0.1',
         'DOWNLOAD_DELAY': 2, # seconds I hope
         'RANDOMIZE_DOWNLOAD_DELAY': False, # no thanks bro
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 1, # reddit hates
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1, # reddit hates,
+        'DATABASE_FILE': args.database_file,
+        'ITEM_PIPELINES': {
+            'subredditscraper.pipelines.SQLiteItemPipeline': 100,
+        }
     })
 
     process.crawl(SubredditSpider, subreddit_name=args.subreddit)

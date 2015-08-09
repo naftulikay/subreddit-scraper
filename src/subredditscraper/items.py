@@ -35,14 +35,20 @@ def link_id_serializer(a):
     """
     Serializes a link id by prefixing it if necessary.
     """
-    return a
+    if isinstance(a, (str, unicode)) and SubredditSpider.post_id_regex.match(a):
+        return u''.join([u't3_', SubredditSpider.post_id_regex.match(a).group(1)])
+    else:
+        return None
 
 
 def comment_id_serializer(a):
     """
     Serializes a comment id by prefixing it if necessary.
     """
-    return a
+    if isinstance(a, (str, unicode)) and SubredditSpider.comment_id_regex.match(a):
+        return u''.join([u't1_', SubredditSpider.comment_id_regex.match(a).group(1)])
+    else:
+        return None
 
 
 class Created(object):
@@ -528,7 +534,3 @@ class Comment(scrapy.Item):
     moderator = the green [M]. admin = the red [A]. special = various other special distinguishes
     """
     distinguished = scrapy.Field()
-
-
-class SQLiteItemPipeline(object):
-    pass
