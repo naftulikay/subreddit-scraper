@@ -29,6 +29,33 @@ class SQLiteItemPipeline(object):
         # TODO determine if tables exist in the database and create if necessary
         pass
 
+    def tables_exist(self, connection):
+        """
+        Determines whether the required SQL tables exist.
+
+        Arguments:
+        connection: SQLite connection to the database.
+
+        Returns:
+        True if the tables exist, False otherwise.
+        """
+        with connection:
+            table_names = [i[0] for i in connection.execute('select name from sqlite_master where type="table";')]
+
+        if 'links' in table_names and 'comments' in table_names:
+            return True
+        else:
+            return False
+
+    def create_tables(self, connection):
+        """
+        Creates the database tables for links and comments.
+
+        Arguments:
+        connection: SQLite connection to the database.
+        """
+        pass
+
     def close_spider(self, spider):
         """
         Callback method triggered on finish of the spider.

@@ -1,6 +1,9 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+import os
+import sqlite3
+import tempfile
 import unittest
 
 from subredditscraper.exceptions import InvalidIdException
@@ -13,7 +16,53 @@ from subredditscraper.items import (
     comment_id_serializer,
 )
 
+from subredditscraper.pipelines import SQLiteItemPipeline
+
 from subredditscraper.spiders import SubredditSpider
+
+
+class SQLiteItemPipelineTestCase(unittest.TestCase):
+    """
+    Test cases for the SQLite item pipeline.
+    """
+
+    def setUp(self):
+        self.connection = sqlite3.connect(':memory:')
+
+
+    def tearDown(self):
+        self.connection.close()
+
+
+    def test_create_tables(self):
+        """
+        Tests that creation of the database tables works as expected.
+        """
+        self.fail("nope, doesn't work.")
+
+
+    def test_tables_exist(self):
+        """
+        Determines if the table presence logic works.
+        """
+        reference = SQLiteItemPipeline(':memory:')
+
+        self.assertFalse(reference.tables_exist(self.connection))
+
+        with self.connection:
+            self.connection.execute('create table links (id integer primary key);')
+
+        self.assertFalse(reference.tables_exist(self.connection))
+
+        with self.connection:
+            self.connection.execute('create table comments (id integer primary key);')
+
+        self.assertTrue(reference.tables_exist(self.connection))
+
+        with self.connection:
+            self.connection.execute('drop table links;')
+
+        self.assertFalse(reference.tables_exist(self.connection))
 
 
 class ItemsTestCase(unittest.TestCase):
