@@ -32,6 +32,28 @@ class SQLiteItemPipeline(object):
         # TODO determine if tables exist in the database and create if necessary
         pass
 
+
+    def save_link(self, link):
+        """
+        Insert a new row into the links table, storing the link.
+        """
+        pass
+
+    def update_link(self, link):
+        """
+        Update an existing row in the database with the given link information.
+        """
+        pass
+
+
+    def link_exists(self, link):
+        """
+        Evaluates whether a link exists in the database. Use this method to determine whether to insert or update
+        a link in the database.
+        """
+        pass
+
+
     def new_connection(self):
         """
         Factory method for creating a new connection to the SQLite database.
@@ -170,6 +192,7 @@ class SQLiteItemPipeline(object):
         spider: The spider instance which has finished with this pipeline.
         """
         pass
+
 
     def process_item(self, item, spider):
         """

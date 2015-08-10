@@ -37,6 +37,69 @@ class SQLiteItemPipelineTestCase(unittest.TestCase):
         self.connection.close()
 
 
+    def test_open_spider(self):
+        """
+        Tests that open spider creates database tables if necessary.
+        """
+        self.fail('not implemented')
+
+
+    def test_save_link(self):
+        """
+        Tests that inserting a new link into the database works.
+        """
+        self.fail('not implemented')
+
+
+    def test_update_link(self):
+        """
+        Tests that updating an existing link in the database works.
+        """
+        self.fail('not implemented')
+
+
+    def test_link_exists(self):
+        """
+        Tests that we can evaluate whether a link is present in the database.
+        """
+        self.fail('not implemented')
+
+
+    def test_save_comment(self):
+        """
+        Tests that inserting a comment into the database works.
+        """
+        self.fail('not implemented')
+
+
+    def test_update_comment(self):
+        """
+        Tests that updating a comment in the database works.
+        """
+        self.fail('not implemented')
+
+
+    def test_comment_exists(self):
+        """
+        Tests that we can evaluate whether a comment is present in the database.
+        """
+        self.fail('not implemented')
+
+
+    def test_close_spider(self):
+        """
+        Tests thath close spider does nothing really.
+        """
+        pass
+
+
+    def test_process_item(self):
+        """
+        Tests that process item successfully stores link and comment items.
+        """
+        self.fail('not implemented')
+
+
     @mock.patch('subredditscraper.pipelines.sqlite3')
     def test_new_connection(self, mock_sqlite3):
         """
