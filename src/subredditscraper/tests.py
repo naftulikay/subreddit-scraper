@@ -14,6 +14,7 @@ from subredditscraper.items import (
     id_serializer,
     link_id_serializer,
     comment_id_serializer,
+    time_serializer,
 )
 
 from subredditscraper.pipelines import SQLiteItemPipeline
@@ -28,17 +29,119 @@ class SQLiteItemPipelineTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = sqlite3.connect(':memory:')
+        self.connection.row_factory = sqlite3.Row
 
 
     def tearDown(self):
         self.connection.close()
 
 
+    def test_get_table_names(self):
+        """
+        Tests that the get table names function returns a list of table names present in the database.
+        """
+        reference = SQLiteItemPipeline(':memory:')
+
+        self.assertEquals([], reference.get_table_names(self.connection))
+
+        with self.connection:
+            self.connection.execute('create table llamas (id integer primary key);')
+
+        self.assertEquals(['llamas'], reference.get_table_names(self.connection))
+
+
     def test_create_tables(self):
         """
         Tests that creation of the database tables works as expected.
         """
-        self.fail("nope, doesn't work.")
+        reference = SQLiteItemPipeline(':memory:')
+
+        with self.connection:
+            # no tables to start with
+            self.assertEqual(0, len([i[0] for i in self.connection.execute('select name from sqlite_master where type="table";')]))
+
+        # create the tables nao
+        reference.create_tables(self.connection)
+
+        with self.connection:
+            tables = [i['name'] for i in self.connection.execute('select name from sqlite_master where type="table";')]
+
+        # determine that tables have been created
+        self.assertTrue('links' in tables)
+        self.assertTrue('comments' in tables)
+
+        # determine that links columns exist
+        with self.connection:
+            links_columns = {i['name']: i['type'] for i in self.connection.execute('pragma table_info(links);')}
+
+        # TODO test the types of each column for accuracy
+        self.assertIn('id', links_columns.keys())
+        self.assertIn('created', links_columns.keys())
+        self.assertIn('created_utc', links_columns.keys())
+        self.assertIn('ups', links_columns.keys())
+        self.assertIn('downs', links_columns.keys())
+        self.assertIn('likes', links_columns.keys())
+        self.assertIn('prefixed_id', links_columns.keys())
+        self.assertIn('author', links_columns.keys())
+        self.assertIn('author_flair_css_class', links_columns.keys())
+        self.assertIn('author_flair_text', links_columns.keys())
+        self.assertIn('clicked', links_columns.keys())
+        self.assertIn('domain', links_columns.keys())
+        self.assertIn('hidden', links_columns.keys())
+        self.assertIn('is_self', links_columns.keys())
+        self.assertIn('link_flair_css_class', links_columns.keys())
+        self.assertIn('link_flair_text', links_columns.keys())
+        self.assertIn('media', links_columns.keys())
+        self.assertIn('media_embed', links_columns.keys())
+        self.assertIn('num_comments', links_columns.keys())
+        self.assertIn('over_18', links_columns.keys())
+        self.assertIn('permalink', links_columns.keys())
+        self.assertIn('saved', links_columns.keys())
+        self.assertIn('score', links_columns.keys())
+        self.assertIn('selftext', links_columns.keys())
+        self.assertIn('selftext_html', links_columns.keys())
+        self.assertIn('subreddit', links_columns.keys())
+        self.assertIn('subreddit_id', links_columns.keys())
+        self.assertIn('thumbnail', links_columns.keys())
+        self.assertIn('title', links_columns.keys())
+        self.assertIn('url', links_columns.keys())
+        self.assertIn('edited', links_columns.keys())
+        self.assertIn('distinguished', links_columns.keys())
+        self.assertIn('stickied', links_columns.keys())
+
+        # determine that comments columns exist
+        with self.connection:
+            comments_columns = {i['name']: i['type'] for i in self.connection.execute('pragma table_info(comments);')}
+
+        # TODO test the types of each column for accuracy
+        self.assertIn('id', comments_columns.keys())
+        self.assertIn('created', comments_columns.keys())
+        self.assertIn('created_utc', comments_columns.keys())
+        self.assertIn('ups', comments_columns.keys())
+        self.assertIn('downs', comments_columns.keys())
+        self.assertIn('likes', comments_columns.keys())
+        self.assertIn('prefixed_id', comments_columns.keys())
+        self.assertIn('approved_by', comments_columns.keys())
+        self.assertIn('author', comments_columns.keys())
+        self.assertIn('author_flair_css_class', comments_columns.keys())
+        self.assertIn('author_flair_text', comments_columns.keys())
+        self.assertIn('banned_by', comments_columns.keys())
+        self.assertIn('body', comments_columns.keys())
+        self.assertIn('body_html', comments_columns.keys())
+        self.assertIn('edited', comments_columns.keys())
+        self.assertIn('gilded', comments_columns.keys())
+        self.assertIn('link_author', comments_columns.keys())
+        self.assertIn('link_id', comments_columns.keys())
+        self.assertIn('link_title', comments_columns.keys())
+        self.assertIn('link_url', comments_columns.keys())
+        self.assertIn('num_reports', comments_columns.keys())
+        self.assertIn('parent_id', comments_columns.keys())
+        self.assertIn('saved', comments_columns.keys())
+        self.assertIn('score', comments_columns.keys())
+        self.assertIn('score_hidden', comments_columns.keys())
+        self.assertIn('subreddit', comments_columns.keys())
+        self.assertIn('subreddit_id', comments_columns.keys())
+        self.assertIn('distinguished', comments_columns.keys())
 
 
     def test_tables_exist(self):
@@ -84,15 +187,19 @@ class ItemsTestCase(unittest.TestCase):
         """
         # test boolean value
         self.assertEqual(None, edited_serializer(False))
-        self.assertEqual(1.0, edited_serializer(True))
+        self.assertEqual(1, edited_serializer(True))
         # test string value
         self.assertEqual(None, edited_serializer('nope'))
         # convert long to float
-        self.assertEqual(3.0, edited_serializer(3L))
+        self.assertEqual(3, edited_serializer(3L))
         # convert float to float
-        self.assertEqual(3.0, edited_serializer(3.0))
+        self.assertEqual(3, edited_serializer(3.0))
         # convert int to float
-        self.assertEqual(3.0, edited_serializer(3))
+        self.assertEqual(3, edited_serializer(3))
+        # rounding
+        self.assertEqual(4, edited_serializer(3.9))
+        self.assertEqual(4, edited_serializer(4.2))
+
 
     def test_id_serializer(self):
         """
@@ -135,6 +242,14 @@ class ItemsTestCase(unittest.TestCase):
         self.assertEqual(None, comment_id_serializer('LOL_NOT_MATCHING'))
         self.assertEqual(None, comment_id_serializer(1))
         self.assertEqual(None, comment_id_serializer(None))
+
+    def test_time_serializer(self):
+        """
+        Tests that the time serializer converts a time into the right format.
+        """
+        self.assertEqual(100, time_serializer(100.0))
+        self.assertEqual(100, time_serializer(100.10245))
+        self.assertEqual(101, time_serializer(100.5))
 
 
 class SubredditSpiderTestCase(unittest.TestCase):

@@ -16,7 +16,7 @@ def edited_serializer(a):
     if a is False:
         return None
     elif isinstance(a, (int, float, long)) or a is True:
-        return float(a)
+        return time_serializer(a)
     else:
         return None
 
@@ -51,6 +51,14 @@ def comment_id_serializer(a):
         return None
 
 
+def time_serializer(a):
+    """
+    Simply rounds a floating point value for its input, as we must store dates and times as integers
+    in SQLite.
+    """
+    return round(float(a))
+
+
 class Created(object):
     """
     An object that keeps track of when it was created.
@@ -62,7 +70,7 @@ class Created(object):
     Description:
     (int) The time of creation in local epoch-second format. ex: 1331042771.0
     """
-    created = scrapy.Field(serializer=float)
+    created = scrapy.Field(serializer=time_serializer)
 
     """
     The time of creation in UTC epoch-second format. Note that neither of these ever have a non-zero fraction.
@@ -70,7 +78,7 @@ class Created(object):
     Description:
     (int) the time of creation in UTC epoch-second format. Note that neither of these ever have a non-zero fraction.
     """
-    created_utc = scrapy.Field(serializer=float)
+    created_utc = scrapy.Field(serializer=time_serializer)
 
 
 class Votable(object):

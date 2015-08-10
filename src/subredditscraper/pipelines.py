@@ -29,6 +29,21 @@ class SQLiteItemPipeline(object):
         # TODO determine if tables exist in the database and create if necessary
         pass
 
+
+    def get_table_names(self, connection):
+        """
+        Returns a list of the table names present in the SQLite database.
+
+        Arguments:
+        connection: SQLite connectioon to the database.
+
+        Returns:
+        A list containing string names of the tables present in the database.
+        """
+        with connection:
+            return [i[0] for i in connection.execute('select name from sqlite_master where type="table";')]
+
+
     def tables_exist(self, connection):
         """
         Determines whether the required SQL tables exist.
@@ -39,8 +54,7 @@ class SQLiteItemPipeline(object):
         Returns:
         True if the tables exist, False otherwise.
         """
-        with connection:
-            table_names = [i[0] for i in connection.execute('select name from sqlite_master where type="table";')]
+        table_names = self.get_table_names(connection)
 
         if 'links' in table_names and 'comments' in table_names:
             return True
@@ -49,12 +63,89 @@ class SQLiteItemPipeline(object):
 
     def create_tables(self, connection):
         """
-        Creates the database tables for links and comments.
+        Creates the database tables for links and comments. If database tables previously exist in the database,
+        they'll be dropped and recreated by this method. Only call this method if you understand the implications.
 
         Arguments:
         connection: SQLite connection to the database.
         """
-        pass
+        with connection:
+            # drop links if it exists
+            connection.execute('drop table if exists links;')
+            # create links table
+            connection.execute(
+                "create table links ("
+                "    id text primary key,"
+                "    created integer,"
+                "    created_utc integer,"
+                "    ups integer,"
+                "    downs integer,"
+                "    likes integer,"
+                "    prefixed_id text,"
+                "    author text,"
+                "    author_flair_css_class text,"
+                "    author_flair_text text,"
+                "    clicked integer,"
+                "    domain text,"
+                "    hidden integer,"
+                "    is_self integer,"
+                "    link_flair_css_class text,"
+                "    link_flair_text text,"
+                "    media text,"
+                "    media_embed text,"
+                "    num_comments integer,"
+                "    over_18 integer,"
+                "    permalink text,"
+                "    saved integer,"
+                "    score integer,"
+                "    selftext text,"
+                "    selftext_html text,"
+                "    subreddit text,"
+                "    subreddit_id text,"
+                "    thumbnail text,"
+                "    title text,"
+                "    url text,"
+                "    edited integer,"
+                "    distinguished text,"
+                "    stickied integer"
+                ");"
+            )
+            # drop comments if it exists
+            connection.execute('drop table if exists comments;')
+            # create comments table
+            connection.execute(
+                "create table comments ("
+                "    id text primary key,"
+                "    created integer,"
+                "    created_utc integer,"
+                "    ups integer,"
+                "    downs integer,"
+                "    likes integer,"
+                "    prefixed_id text,"
+                "    approved_by text,"
+                "    author text,"
+                "    author_flair_css_class text,"
+                "    author_flair_text text,"
+                "    banned_by text,"
+                "    body text, "
+                "    body_html text,"
+                "    edited integer,"
+                "    gilded integer,"
+                "    link_author text,"
+                "    link_id text,"
+                "    link_title text,"
+                "    link_url text,"
+                "    num_reports integer,"
+                "    parent_id text,"
+                "    saved integer,"
+                "    score integer,"
+                "    score_hidden integer,"
+                "    subreddit text,"
+                "    subreddit_id text,"
+                "    distinguished text"
+                ");"
+            )
+
 
     def close_spider(self, spider):
         """
