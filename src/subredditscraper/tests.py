@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+import mock
 import os
 import sqlite3
 import tempfile
@@ -34,6 +35,28 @@ class SQLiteItemPipelineTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.connection.close()
+
+
+    @mock.patch('subredditscraper.pipelines.sqlite3')
+    def test_new_connection(self, mock_sqlite3):
+        """
+        Tests that new connections are created properly.
+        """
+        reference = SQLiteItemPipeline(':memory:')
+
+        mock_connection = mock.Mock()
+        mock_connection.row_factory = mock.Mock(name='dummy_row_factory')
+
+        mock_sqlite3.connect.return_value = mock_connection
+
+        c = reference.new_connection()
+
+        self.assertEqual(mock_connection, c)
+
+        # make sure that we instantiated the connection with the right connection string
+        mock_sqlite3.connect.assert_called_with(':memory:')
+
+        self.assertEqual(mock_sqlite3.Row, c.row_factory)
 
 
     def test_get_table_names(self):

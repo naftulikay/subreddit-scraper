@@ -9,6 +9,7 @@ setup(
     package_dir = { '': 'src'},
     install_requires = ['setuptools',
         'scrapy >= 1.0.1, < 1.1.0',
+        'sqlite3',
         'mock',
     ],
     entry_points = {

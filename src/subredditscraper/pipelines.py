@@ -1,6 +1,9 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+import sqlite3
+
+
 class SQLiteItemPipeline(object):
 
     @classmethod
@@ -28,6 +31,18 @@ class SQLiteItemPipeline(object):
         """
         # TODO determine if tables exist in the database and create if necessary
         pass
+
+    def new_connection(self):
+        """
+        Factory method for creating a new connection to the SQLite database.
+
+        Returns:
+        A properly configured SQLite connection object.
+        """
+        result = sqlite3.connect(self.database_file)
+        result.row_factory = sqlite3.Row
+
+        return result
 
 
     def get_table_names(self, connection):
